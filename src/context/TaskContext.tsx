@@ -85,6 +85,14 @@ function taskReducer(state: Task[], action: TaskAction): Task[] {
           : t,
       );
 
+    case 'ADD_FOCUS_TIME':
+      // Accumulate partial focus time without changing status or completedAt.
+      return state.map((t) =>
+        t.id === action.payload.id
+          ? { ...t, focusTimeMs: (t.focusTimeMs ?? 0) + action.payload.focusTimeMs }
+          : t,
+      );
+
     default:
       return state;
   }
@@ -109,6 +117,8 @@ type TaskContextValue = {
   completeTask: (id: string, focusTimeMs?: number) => void;
   /** Move all non-completed tasks back to inbox (end-of-day rollover). */
   rolloverTasks: () => void;
+  /** Accumulate partial focus time on a task without marking it done — used on abandon. */
+  addFocusTime: (id: string, focusTimeMs: number) => void;
 };
 
 const TaskContext = createContext<TaskContextValue | null>(null);
@@ -177,6 +187,10 @@ export function TaskProvider({ children }: { children: ReactNode }) {
     dispatch({ type: 'ROLLOVER_TASKS', payload: { todayKey: getTodayKey() } });
   }
 
+  function addFocusTime(id: string, focusTimeMs: number): void {
+    dispatch({ type: 'ADD_FOCUS_TIME', payload: { id, focusTimeMs } });
+  }
+
   return (
     <TaskContext.Provider
       value={{
@@ -188,6 +202,7 @@ export function TaskProvider({ children }: { children: ReactNode }) {
         deleteTask,
         completeTask,
         rolloverTasks,
+        addFocusTime,
       }}
     >
       {children}

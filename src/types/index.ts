@@ -108,4 +108,10 @@ export type TaskAction =
    * `todayKey` is a "YYYY-MM-DD" string supplied by the caller so the reducer
    * can compare dates without ever calling `new Date()` internally.
    */
-  | { type: 'ROLLOVER_TASKS'; payload: { todayKey: string } };
+  | { type: 'ROLLOVER_TASKS'; payload: { todayKey: string } }
+
+  /**
+   * Accumulate focus time on a task without changing its status — used when
+   * a focus session is abandoned.
+   */
+  | { type: 'ADD_FOCUS_TIME'; payload: { id: string; focusTimeMs: number } };

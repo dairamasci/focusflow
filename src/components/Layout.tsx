@@ -3,6 +3,7 @@ import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { Target } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useFocusContext } from '@/context/FocusContext'
 
 const NAV_LINKS = [
   { to: '/inbox', label: 'Bandeja' },
@@ -18,6 +19,8 @@ function formatTodayInSpanish(): string {
 
 export default function Layout() {
   const today = formatTodayInSpanish()
+  const { activeTaskId } = useFocusContext()
+  const isFocusActive = activeTaskId !== null
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -30,7 +33,6 @@ export default function Layout() {
           <span className="text-sm text-muted-foreground">{today}</span>
         </div>
 
-        {/* Nav container — in Step 8, add `opacity-40 pointer-events-none` when focus is active */}
         <nav className="max-w-5xl mx-auto px-4" aria-label="Navegación principal">
           <ul className="flex gap-1">
             {NAV_LINKS.map(({ to, label }) => (
@@ -42,7 +44,8 @@ export default function Layout() {
                       'block px-4 py-2 text-sm font-medium border-b-2 transition-colors',
                       isActive
                         ? 'border-primary text-primary'
-                        : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
+                        : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border',
+                      isFocusActive && to !== '/focus' && 'opacity-40 pointer-events-none'
                     )
                   }
                 >
