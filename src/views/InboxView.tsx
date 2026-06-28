@@ -46,7 +46,7 @@ function TaskCard({ task, onPriorityClick, onSendToBoard }: TaskCardProps) {
         type="button"
         onClick={onPriorityClick}
         title="Cambiar prioridad"
-        className="cursor-pointer rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        className="cursor-pointer rounded transition-opacity hover:opacity-80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       >
         <Badge
           className={cn(
@@ -147,7 +147,7 @@ export default function InboxView() {
           Sin priorizar
         </h2>
         {unprioritized.length === 0 ? (
-          <p className="text-sm text-muted-foreground/60">
+          <p className="rounded-lg border border-dashed border-border px-4 py-6 text-center text-sm text-muted-foreground">
             No hay tareas sin priorizar.
           </p>
         ) : (
@@ -170,7 +170,7 @@ export default function InboxView() {
           Listas para el tablero
         </h2>
         {prioritized.length === 0 ? (
-          <p className="text-sm text-muted-foreground/60">
+          <p className="rounded-lg border border-dashed border-border px-4 py-6 text-center text-sm text-muted-foreground">
             Aún no hay tareas priorizadas. Hacé click en "Sin prioridad" para asignar una.
           </p>
         ) : (

@@ -1,4 +1,4 @@
-import { NavLink, Outlet } from 'react-router-dom'
+import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
 import { Target } from 'lucide-react'
@@ -21,6 +21,7 @@ export default function Layout() {
   const today = formatTodayInSpanish()
   const { activeTaskId } = useFocusContext()
   const isFocusActive = activeTaskId !== null
+  const location = useLocation()
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -30,7 +31,8 @@ export default function Layout() {
             <Target className="h-5 w-5 text-primary" />
             <span className="font-semibold text-lg tracking-tight">Focus Flow</span>
           </div>
-          <span className="text-sm text-muted-foreground">{today}</span>
+          {/* Hide date below 640 px; visible at sm (640 px) and above, including 768 px */}
+          <span className="hidden sm:block text-sm text-muted-foreground">{today}</span>
         </div>
 
         <nav className="max-w-5xl mx-auto px-4" aria-label="Navegación principal">
@@ -58,7 +60,11 @@ export default function Layout() {
       </header>
 
       <main className="max-w-5xl mx-auto px-4 py-6">
-        <Outlet />
+        {/* Key by pathname so React remounts the wrapper on every route change,
+            re-triggering the entrance animation (subtle fade-in). */}
+        <div key={location.pathname} className="animate-in fade-in duration-300">
+          <Outlet />
+        </div>
       </main>
     </div>
   )

@@ -81,10 +81,10 @@ function TaskCard({ task, onDragStart }: TaskCardProps) {
       onDragStart={onDragStart}
       data-testid="task-card"
       className={cn(
-        'rounded-lg border border-border bg-card px-4 py-3 shadow-sm',
+        'rounded-lg border border-border bg-card px-3 py-3 shadow-sm',
         'border-l-4',
         priorityBorderClass(task.priority),
-        'cursor-grab active:cursor-grabbing select-none',
+        'cursor-grab active:cursor-grabbing select-none transition-colors hover:bg-accent/40',
       )}
     >
       <p className="truncate text-sm font-medium text-foreground">{task.name}</p>
@@ -207,8 +207,8 @@ export default function BoardView() {
         </p>
       </div>
 
-      {/* Three-column kanban grid */}
-      <div className="grid flex-1 grid-cols-3 gap-4 min-h-0">
+      {/* Three-column kanban grid — gap-3 at md (768 px), gap-4 at lg (1024 px+) */}
+      <div className="grid flex-1 grid-cols-3 gap-3 md:gap-4 min-h-0">
         {COLUMNS.map((col) => {
           const colTasks = tasksByStatus[col.status];
           const isOver = dragOverColumn === col.status;
@@ -222,7 +222,7 @@ export default function BoardView() {
               onDragLeave={handleDragLeave}
               onDrop={handleDrop(col.status)}
               className={cn(
-                'flex flex-col rounded-xl border border-border bg-muted/30 p-3 transition-colors duration-150',
+                'flex flex-col rounded-xl border border-border bg-muted/30 p-2 md:p-3 transition-colors duration-150',
                 isOver && 'ring-2 ring-primary bg-accent/40',
               )}
             >
@@ -243,7 +243,7 @@ export default function BoardView() {
               {/* Task list or empty-state placeholder */}
               <div className="flex flex-1 flex-col gap-2">
                 {colTasks.length === 0 ? (
-                  <p className="py-8 text-center text-xs text-muted-foreground/50">
+                  <p className="rounded-lg border border-dashed border-border py-8 text-center text-xs text-muted-foreground">
                     Sin tareas
                   </p>
                 ) : (

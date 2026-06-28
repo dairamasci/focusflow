@@ -58,7 +58,6 @@ export default function FocusView() {
     if (activeTaskId !== null && activeTask === null) {
       abandonFocus();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTaskId, activeTask]);
 
   // Render nothing while the guard dispatches and React re-renders.
@@ -128,16 +127,16 @@ export default function FocusView() {
 
   // ── Selector mode ─────────────────────────────────────────────────────────
   return (
-    <div className="space-y-6">
+    <div className="mx-auto max-w-2xl space-y-6 py-6">
       <div className="space-y-1">
         <h1 className="text-2xl font-bold tracking-tight">Modo foco</h1>
-        <p className="text-muted-foreground">
+        <p className="mt-1 text-sm text-muted-foreground">
           Seleccioná una tarea para iniciar una sesión de trabajo concentrado.
         </p>
       </div>
 
       {candidates.length === 0 ? (
-        <p className="py-10 text-center text-sm text-muted-foreground">
+        <p className="rounded-lg border border-dashed border-border px-4 py-6 text-center text-sm text-muted-foreground">
           No hay tareas para enfocar. Mové tareas al tablero primero.
         </p>
       ) : (
@@ -151,7 +150,7 @@ export default function FocusView() {
                   setStatus(task.id, 'in_progress');
                 }}
                 className={cn(
-                  'w-full text-left px-4 py-3 rounded-lg border border-l-4 bg-card',
+                  'w-full text-left px-4 py-3 rounded-lg border border-border border-l-4 bg-card shadow-sm',
                   'hover:bg-accent transition-colors cursor-pointer',
                   priorityBorderClass(task.priority),
                 )}
