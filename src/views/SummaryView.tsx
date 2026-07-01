@@ -45,8 +45,14 @@ export default function SummaryView() {
 
   const { completedToday, completedCount, newTasksCount, totalFocusMs } =
     useMemo(() => {
+      // Count everything completed today, whether still `done` on the board or
+      // already `archived` by an earlier "Cerrar el día" on the same day — so the
+      // day's metrics stay stable across a close.
       const completed = tasks.filter(
-        (t) => t.status === 'done' && t.completedAt !== undefined && isToday(t.completedAt),
+        (t) =>
+          (t.status === 'done' || t.status === 'archived') &&
+          t.completedAt !== undefined &&
+          isToday(t.completedAt),
       );
 
       return {

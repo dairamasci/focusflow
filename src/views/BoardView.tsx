@@ -15,7 +15,7 @@
  */
 
 import { useState, useMemo } from 'react';
-import type { Task, TaskStatus } from '@/types';
+import type { Task } from '@/types';
 import { useTaskContext } from '@/context/TaskContext';
 import { formatRelative } from '@/utils/dates';
 import { cn } from '@/lib/utils';
@@ -30,8 +30,8 @@ import {
 // Types
 // ---------------------------------------------------------------------------
 
-/** The three statuses that live on the board (excludes 'inbox'). */
-type BoardStatus = Exclude<TaskStatus, 'inbox'>;
+/** The three statuses that live on the board. 'inbox' and 'archived' never appear here. */
+type BoardStatus = 'todo' | 'in_progress' | 'done';
 
 interface ColumnConfig {
   status: BoardStatus;

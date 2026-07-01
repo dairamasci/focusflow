@@ -17,9 +17,11 @@ export type Priority = 'urgent' | 'normal' | 'low' | null;
  *  - `inbox`       — just captured, not yet committed to the board
  *  - `todo`        — on the board, queued for work
  *  - `in_progress` — currently being focused on
- *  - `done`        — completed
+ *  - `done`        — completed today, still visible on the board
+ *  - `archived`    — completed on a previous day, moved off the board at day close
+ *                    (kept forever in the Archive view)
  */
-export type TaskStatus = 'inbox' | 'todo' | 'in_progress' | 'done';
+export type TaskStatus = 'inbox' | 'todo' | 'in_progress' | 'done' | 'archived';
 
 // ---------------------------------------------------------------------------
 // Domain entities

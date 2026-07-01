@@ -34,7 +34,9 @@ export default function ArchiveView() {
 
   // Group done tasks by calendar day, newest day first, newest task first.
   const groups = useMemo(() => {
-    const done = tasks.filter((t) => t.status === 'done');
+    // Both statuses represent completed work: `done` = finished today (still on
+    // the board), `archived` = filed away at a previous day close.
+    const done = tasks.filter((t) => t.status === 'done' || t.status === 'archived');
 
     // ISO strings from toISOString() are UTC 'Z' → lexicographic order === chronological.
     const sorted = [...done].sort((a, b) => archiveDate(b).localeCompare(archiveDate(a)));

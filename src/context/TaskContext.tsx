@@ -73,17 +73,19 @@ function taskReducer(state: Task[], action: TaskAction): Task[] {
       });
 
     case 'ROLLOVER_TASKS':
-      // Semantic: ALL non-completed tasks return to inbox regardless of when
-      // they were created or moved. "Close day" means the user is done for
-      // this session; next session everything should appear fresh in inbox for
-      // re-triage. Priority is preserved so re-triaging is quick.
-      // payload.todayKey is available for future date-aware filtering but is
-      // not used here by design (the rule is simply status !== 'done' → inbox).
-      return state.map((t) =>
-        t.status !== 'done'
-          ? { ...t, status: 'inbox', movedToBoardAt: undefined }
-          : t,
-      );
+      // Closing the day resets the working set:
+      //  - `done`     → `archived`: completed tasks leave the board but are kept
+      //                 forever in the Archive view (completedAt/focusTimeMs intact).
+      //  - `archived` → unchanged: already filed away in a previous close.
+      //  - everything else (inbox/todo/in_progress) → `inbox`: pending work comes
+      //                 back for re-triage. Priority is preserved for a quick re-sort.
+      // payload.todayKey is available for future date-aware filtering but is not
+      // used here by design.
+      return state.map((t) => {
+        if (t.status === 'done') return { ...t, status: 'archived' };
+        if (t.status === 'archived') return t;
+        return { ...t, status: 'inbox', movedToBoardAt: undefined };
+      });
 
     case 'ADD_FOCUS_TIME':
       // Accumulate partial focus time without changing status or completedAt.
