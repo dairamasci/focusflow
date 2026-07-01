@@ -50,15 +50,18 @@ export default function Layout() {
           </div>
         </div>
 
-        <nav className="max-w-5xl mx-auto px-4" aria-label="Navegación principal">
-          <ul className="flex gap-1">
+        <nav
+          className="max-w-5xl mx-auto px-2 sm:px-4 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          aria-label="Navegación principal"
+        >
+          <ul className="flex gap-1 w-max">
             {NAV_LINKS.map(({ to, label }) => (
               <li key={to}>
                 <NavLink
                   to={to}
                   className={({ isActive }) =>
                     cn(
-                      'block px-4 py-2 text-sm font-medium border-b-2 transition-colors',
+                      'block shrink-0 whitespace-nowrap px-3 sm:px-4 py-2 text-sm font-medium border-b-2 transition-colors',
                       isActive
                         ? 'border-primary text-primary'
                         : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border',
