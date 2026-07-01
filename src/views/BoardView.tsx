@@ -207,8 +207,10 @@ export default function BoardView() {
         </p>
       </div>
 
-      {/* Three-column kanban grid — gap-3 at md (768 px), gap-4 at lg (1024 px+) */}
-      <div className="grid flex-1 grid-cols-3 gap-3 md:gap-4 min-h-0">
+      {/* Kanban grid: columns stack vertically on mobile (<640 px), sit side by
+          side from sm (640 px) up. flex-1/min-h-0 only apply in the side-by-side
+          layout so stacked columns keep their natural content height. */}
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 md:gap-4 sm:flex-1 sm:min-h-0">
         {COLUMNS.map((col) => {
           const colTasks = tasksByStatus[col.status];
           const isOver = dragOverColumn === col.status;
