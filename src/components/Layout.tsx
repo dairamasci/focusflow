@@ -10,6 +10,7 @@ const NAV_LINKS = [
   { to: '/board', label: 'Tablero' },
   { to: '/focus', label: 'Foco' },
   { to: '/summary', label: 'Resumen' },
+  { to: '/archive', label: 'Archivo' },
 ] as const
 
 function formatTodayInSpanish(): string {

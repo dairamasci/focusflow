@@ -4,19 +4,8 @@ import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import type { DailyStats } from '@/types';
 import { useTaskContext } from '@/context/TaskContext';
-import { isToday, getTodayKey } from '@/utils/dates';
+import { isToday, getTodayKey, formatDuration } from '@/utils/dates';
 import { Button } from '@/components/ui/button';
-
-// ---------------------------------------------------------------------------
-// Helper — format milliseconds to "Xh Ym" or "Ym"
-// ---------------------------------------------------------------------------
-
-function formatFocusDuration(ms: number): string {
-  const h = Math.floor(ms / 3_600_000);
-  const m = Math.floor((ms % 3_600_000) / 60_000);
-  if (h > 0) return `${h}h ${m}m`;
-  return `${m}m`;
-}
 
 // ---------------------------------------------------------------------------
 // Stat card — internal presentational component
@@ -142,7 +131,7 @@ export default function SummaryView() {
         />
         <StatCard
           label="Tiempo total en foco"
-          value={formatFocusDuration(totalFocusMs)}
+          value={formatDuration(totalFocusMs)}
           testId="stat-focus"
         />
       </div>
@@ -172,7 +161,7 @@ export default function SummaryView() {
                   {task.name}
                 </span>
                 <span className="shrink-0 text-xs text-muted-foreground">
-                  {formatFocusDuration(task.focusTimeMs ?? 0)}
+                  {formatDuration(task.focusTimeMs ?? 0)}
                 </span>
               </li>
             ))}

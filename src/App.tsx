@@ -4,6 +4,7 @@ import InboxView from '@/views/InboxView'
 import BoardView from '@/views/BoardView'
 import FocusView from '@/views/FocusView'
 import SummaryView from '@/views/SummaryView'
+import ArchiveView from '@/views/ArchiveView'
 
 export default function App() {
   return (
@@ -14,6 +15,7 @@ export default function App() {
         <Route path="/board" element={<BoardView />} />
         <Route path="/focus" element={<FocusView />} />
         <Route path="/summary" element={<SummaryView />} />
+        <Route path="/archive" element={<ArchiveView />} />
       </Route>
       <Route path="*" element={<Navigate to="/inbox" replace />} />
     </Routes>

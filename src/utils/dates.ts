@@ -83,3 +83,18 @@ export function isToday(str: string): boolean {
 export function getTodayKey(): string {
   return format(new Date(), 'yyyy-MM-dd');
 }
+
+// ---------------------------------------------------------------------------
+// Duration formatting
+// ---------------------------------------------------------------------------
+
+/**
+ * Format a duration in milliseconds as a human-friendly "Xh Ym" or "Ym".
+ * Examples: 4_500_000 → "1h 15m", 900_000 → "15m", 0 → "0m".
+ * Shared by SummaryView and ArchiveView so focus-time reads identically everywhere.
+ */
+export function formatDuration(ms: number): string {
+  const h = Math.floor(ms / 3_600_000);
+  const m = Math.floor((ms % 3_600_000) / 60_000);
+  return h > 0 ? `${h}h ${m}m` : `${m}m`;
+}
