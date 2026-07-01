@@ -29,7 +29,7 @@ function TaskCard({ task, onPriorityClick, onSendToBoard }: TaskCardProps) {
     <div
       className={cn(
         'flex items-center gap-3 rounded-lg border border-border bg-card px-4 py-3 shadow-sm',
-        'border-l-4',
+        'border-l-4 transition-all hover:-translate-y-0.5 hover:shadow-md',
         priorityBorderClass(task.priority),
       )}
     >

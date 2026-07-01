@@ -2,9 +2,12 @@ import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
+import { CheckCircle2, Sparkles, Timer, PartyPopper, type LucideIcon } from 'lucide-react';
 import type { DailyStats } from '@/types';
 import { useTaskContext } from '@/context/TaskContext';
 import { isToday, getTodayKey, formatDuration } from '@/utils/dates';
+import { celebrate } from '@/lib/confetti';
+import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 
 // ---------------------------------------------------------------------------
@@ -15,18 +18,26 @@ interface StatCardProps {
   label: string;
   value: string;
   testId: string;
+  icon: LucideIcon;
+  /** Tailwind classes for the icon tint + soft background. */
+  accent: string;
 }
 
-function StatCard({ label, value, testId }: StatCardProps) {
+function StatCard({ label, value, testId, icon: Icon, accent }: StatCardProps) {
   return (
-    <div className="flex flex-col gap-1 rounded-xl border border-border bg-card px-5 py-4 shadow-sm">
-      <span className="text-sm text-muted-foreground">{label}</span>
-      <span
-        data-testid={testId}
-        className="text-3xl font-bold tracking-tight text-foreground"
-      >
-        {value}
+    <div className="flex items-center gap-4 rounded-xl border border-border bg-card px-5 py-4 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md">
+      <span className={cn('flex h-11 w-11 shrink-0 items-center justify-center rounded-lg', accent)}>
+        <Icon className="h-5 w-5" />
       </span>
+      <div className="flex min-w-0 flex-col gap-0.5">
+        <span className="text-sm text-muted-foreground">{label}</span>
+        <span
+          data-testid={testId}
+          className="text-2xl font-bold tracking-tight text-foreground tabular-nums"
+        >
+          {value}
+        </span>
+      </div>
     </div>
   );
 }
@@ -96,11 +107,12 @@ export default function SummaryView() {
       }
     }
 
-    // 3. Move all non-completed tasks back to inbox.
+    // 3. Move all non-completed tasks back to inbox (done → archived).
     rolloverTasks();
 
-    // 4. Navigate home.
-    void navigate('/inbox');
+    // 4. Celebrate the close, then navigate home once the confetti is on screen.
+    celebrate();
+    window.setTimeout(() => navigate('/inbox'), 900);
   }
 
   // ---- Render ----
@@ -118,7 +130,9 @@ export default function SummaryView() {
           data-testid="close-day"
           onClick={handleCloseDay}
           size="default"
+          className="shrink-0 gap-2 bg-emerald-600 text-white shadow-sm transition-all hover:-translate-y-0.5 hover:bg-emerald-700 hover:shadow-md dark:bg-emerald-600 dark:hover:bg-emerald-500"
         >
+          <PartyPopper className="h-4 w-4" />
           Cerrar el día
         </Button>
       </div>
@@ -129,16 +143,22 @@ export default function SummaryView() {
           label="Tareas completadas"
           value={String(completedCount)}
           testId="stat-completed"
+          icon={CheckCircle2}
+          accent="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
         />
         <StatCard
           label="Tareas que surgieron"
           value={String(newTasksCount)}
           testId="stat-new"
+          icon={Sparkles}
+          accent="bg-amber-500/10 text-amber-600 dark:text-amber-400"
         />
         <StatCard
           label="Tiempo total en foco"
           value={formatDuration(totalFocusMs)}
           testId="stat-focus"
+          icon={Timer}
+          accent="bg-violet-500/10 text-violet-600 dark:text-violet-400"
         />
       </div>
 
@@ -161,7 +181,7 @@ export default function SummaryView() {
               <li
                 key={task.id}
                 data-testid="completed-item"
-                className="flex items-center justify-between gap-4 rounded-lg border border-border bg-card px-4 py-3 shadow-sm"
+                className="flex items-center justify-between gap-4 rounded-lg border border-l-4 border-border border-l-emerald-500 bg-card px-4 py-3 shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
               >
                 <span className="min-w-0 flex-1 truncate text-sm font-medium text-foreground">
                   {task.name}

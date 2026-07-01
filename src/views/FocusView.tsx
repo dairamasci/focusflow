@@ -78,11 +78,34 @@ export default function FocusView() {
         </div>
 
         {/* Timer */}
-        <div
-          className="text-6xl font-mono tabular-nums font-bold tracking-tighter"
-          data-testid="focus-timer"
-        >
-          {formatTimer(elapsedMs)}
+        <div className="flex flex-col items-center gap-3">
+          <div
+            className={cn(
+              'text-6xl font-mono tabular-nums font-bold tracking-tighter transition-colors duration-500',
+              isRunning ? 'text-foreground' : 'text-muted-foreground',
+            )}
+            data-testid="focus-timer"
+          >
+            {formatTimer(elapsedMs)}
+          </div>
+
+          {/* Live status pill with a pulsing dot */}
+          <span
+            className={cn(
+              'inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium',
+              isRunning
+                ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
+                : 'bg-amber-500/10 text-amber-600 dark:text-amber-400',
+            )}
+          >
+            <span
+              className={cn(
+                'h-2 w-2 rounded-full',
+                isRunning ? 'animate-pulse bg-emerald-500' : 'bg-amber-500',
+              )}
+            />
+            {isRunning ? 'En curso' : 'En pausa'}
+          </span>
         </div>
 
         {/* Controls */}

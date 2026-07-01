@@ -84,7 +84,7 @@ function TaskCard({ task, onDragStart }: TaskCardProps) {
         'rounded-lg border border-border bg-card px-3 py-3 shadow-sm',
         'border-l-4',
         priorityBorderClass(task.priority),
-        'cursor-grab active:cursor-grabbing select-none transition-colors hover:bg-accent/40',
+        'cursor-grab active:cursor-grabbing select-none transition-all hover:-translate-y-0.5 hover:bg-accent/40 hover:shadow-md',
       )}
     >
       <p className="truncate text-sm font-medium text-foreground">{task.name}</p>
