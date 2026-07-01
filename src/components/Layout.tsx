@@ -1,9 +1,10 @@
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
-import { Target } from 'lucide-react'
+import { Target, Sun, Moon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useFocusContext } from '@/context/FocusContext'
+import { useTheme } from '@/hooks/useTheme'
 
 const NAV_LINKS = [
   { to: '/inbox', label: 'Bandeja' },
@@ -23,6 +24,7 @@ export default function Layout() {
   const { activeTaskId } = useFocusContext()
   const isFocusActive = activeTaskId !== null
   const location = useLocation()
+  const { theme, toggleTheme } = useTheme()
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -32,8 +34,20 @@ export default function Layout() {
             <Target className="h-5 w-5 text-primary" />
             <span className="font-semibold text-lg tracking-tight">Focus Flow</span>
           </div>
-          {/* Hide date below 640 px; visible at sm (640 px) and above, including 768 px */}
-          <span className="hidden sm:block text-sm text-muted-foreground">{today}</span>
+          <div className="flex items-center gap-3">
+            {/* Hide date below 640 px; visible at sm (640 px) and above, including 768 px */}
+            <span className="hidden sm:block text-sm text-muted-foreground">{today}</span>
+            <button
+              type="button"
+              onClick={toggleTheme}
+              data-testid="theme-toggle"
+              aria-label={theme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
+              title={theme === 'dark' ? 'Modo claro' : 'Modo oscuro'}
+              className="inline-flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+            >
+              {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </button>
+          </div>
         </div>
 
         <nav className="max-w-5xl mx-auto px-4" aria-label="Navegación principal">
